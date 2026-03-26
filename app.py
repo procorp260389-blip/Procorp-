@@ -12,7 +12,7 @@ api_key = st.secrets.get("GEMINI_API_KEY")
 if api_key:
     try:
         genai.configure(api_key=api_key)
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        model = genai.GenerativeModel('gemini-1.5-flash-latest')
         st.sidebar.success("✅ JARVIS ONLINE")
     except Exception as e:
         st.sidebar.error("❌ Error de Conexión")
