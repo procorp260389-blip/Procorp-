@@ -1,36 +1,33 @@
 import streamlit as st
-import pandas as pd
 import google.generativeai as genai
 from PIL import Image
 
-# --- CONFIGURACIÓN ---
+# 1. Configuración de Identidad
 st.set_page_config(page_title="PROKONECTA OS", layout="wide")
 
+# 2. Conexión con la llave de Secrets
 api_key = st.secrets.get("GEMINI_API_KEY")
 
 if api_key:
     try:
         genai.configure(api_key=api_key)
-        # ESTA ES TU LÍNEA 15 CORRECTA
+        # ESTA LÍNEA ES LA QUE QUITA EL ERROR 404
         model = genai.GenerativeModel('gemini-1.5-flash')
-        st.sidebar.success("✅ JARVIS ONLINE")
+        st.sidebar.success("✅ CONECTADO CON ÉXITO")
     except Exception as e:
-        st.sidebar.error("❌ Error de Conexión")
+        st.sidebar.error("❌ Error de API")
+else:
+    st.error("⚠️ PEGA TU LLAVE EN SECRETS")
 
-# --- INTERFAZ ---
-st.markdown("<h1 style='text-align: center; color: #00f2ff;'>PROKONECTA OS v7.0</h1>", unsafe_allow_html=True)
+# 3. Interfaz de Usuario
+st.title("🚀 PROKONECTA OS v7.0")
 
-tab1, tab2 = st.tabs(["📈 TRADING VISION", "🛰️ RADAR"])
+img_file = st.file_uploader("Sube una imagen para analizar", type=['jpg', 'png', 'jpeg'])
 
-with tab1:
-    st.subheader("Análisis de Gráficos")
-    img_file = st.file_uploader("Sube tu gráfico", type=['jpg', 'png', 'jpeg'])
-    if img_file and st.button("ANALIZAR"):
-        with st.spinner("Jarvis analizando..."):
-            img = Image.open(img_file)
-            response = model.generate_content(["Analiza tendencia, soportes y resistencias de este gráfico en español.", img])
-            st.info(response.text)
-
-with tab2:
-    st.subheader("Prospectos")
-    st.write("Radar activo buscando negocios...")
+if img_file and st.button("EJECUTAR ANÁLISIS"):
+    with st.spinner("Procesando..."):
+        img = Image.open(img_file)
+        # Pedimos el análisis
+        response = model.generate_content(["Analiza esta imagen y dame puntos clave en español.", img])
+        st.markdown("### 🤖 Resultado de Jarvis:")
+        st.write(response.text)
