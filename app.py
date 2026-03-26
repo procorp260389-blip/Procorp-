@@ -2,32 +2,35 @@ import streamlit as st
 import google.generativeai as genai
 from PIL import Image
 
-# 1. Configuración de Identidad
+# Configuración de página
 st.set_page_config(page_title="PROKONECTA OS", layout="wide")
 
-# 2. Conexión con la llave de Secrets
+# Conexión con la llave
 api_key = st.secrets.get("GEMINI_API_KEY")
 
 if api_key:
-    try:
-        genai.configure(api_key=api_key)
-        # ESTA LÍNEA ES LA QUE QUITA EL ERROR 404
-        model = genai.GenerativeModel('gemini-1.5-flash')
-        st.sidebar.success("✅ CONECTADO CON ÉXITO")
-    except Exception as e:
-        st.sidebar.error("❌ Error de API")
+    genai.configure(api_key=api_key)
+    # EL CEREBRO DE LA IA (Versión estable)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+    st.sidebar.success("✅ JARVIS ONLINE")
 else:
-    st.error("⚠️ PEGA TU LLAVE EN SECRETS")
+    st.sidebar.error("❌ FALTA LLAVE")
 
-# 3. Interfaz de Usuario
-st.title("🚀 PROKONECTA OS v7.0")
+st.markdown("<h1 style='color: #00f2ff;'>PROKONECTA OS v7.0</h1>", unsafe_allow_html=True)
 
-img_file = st.file_uploader("Sube una imagen para analizar", type=['jpg', 'png', 'jpeg'])
+# Subida de archivos
+img_file = st.file_uploader("Sube tu captura aquí", type=['jpg', 'png', 'jpeg'])
 
-if img_file and st.button("EJECUTAR ANÁLISIS"):
-    with st.spinner("Procesando..."):
-        img = Image.open(img_file)
-        # Pedimos el análisis
-        response = model.generate_content(["Analiza esta imagen y dame puntos clave en español.", img])
-        st.markdown("### 🤖 Resultado de Jarvis:")
-        st.write(response.text)
+if img_file:
+    st.image(img_file, caption="Imagen cargada", use_container_width=True)
+    
+    if st.button("EJECUTAR ANÁLISIS"):
+        try:
+            with st.spinner("Jarvis analizando..."):
+                img = Image.open(img_file)
+                # Comando directo a la IA
+                response = model.generate_content(["Analiza esta imagen detalladamente en español.", img])
+                st.subheader("🤖 Análisis de Jarvis:")
+                st.write(response.text)
+        except Exception as e:
+            st.error(f"Error técnico: {e}")
