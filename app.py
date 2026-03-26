@@ -3,182 +3,112 @@ import pandas as pd
 import numpy as np
 import time
 
-# --- CONFIGURACIÓN DEL SISTEMA JARVIS OS ---
-st.set_page_config(page_title="JARVIS | PROKONECTA GLOBAL", layout="wide", initial_sidebar_state="collapsed")
+# --- CONFIGURACIÓN JARVIS OS ---
+st.set_page_config(page_title="PROKONECTA OS", layout="wide", initial_sidebar_state="collapsed")
 
-# --- INTERFAZ HOLOGRÁFICA (CSS AVANZADO DE GRADO STARK) ---
-# Este código crea el efecto de vidrio, neón y movimiento dinámico.
+# --- ESTILO STARK: ORO, CRISTAL Y NEÓN ---
 st.markdown("""
     <style>
-    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=JetBrains+Mono:wght@300&family=Inter:wght@400;700&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Syncopate:wght@400;700&family=JetBrains+Mono:wght@300&display=swap');
     
-    /* Fondo Dinámico Espacial */
     .stApp {
-        background: radial-gradient(circle at center, #001529 0%, #000000 100%) !important;
-        background-attachment: fixed;
-        color: #00f2ff !important;
-        font-family: 'Inter', sans-serif;
+        background: radial-gradient(circle at top right, #001a33 0%, #000000 100%) !important;
+        color: #e0e0e0 !important;
+        font-family: 'JetBrains Mono', monospace;
     }
 
-    /* Ocultar elementos estándar para limpieza total */
     header, footer, #MainMenu {visibility: hidden;}
-    .stHeader { background: transparent !important; }
 
-    /* Título con Neón Activo (Syncopate) */
-    h1 {
+    /* Título Elegante */
+    .stark-title {
         font-family: 'Syncopate', sans-serif;
-        color: #fff !important;
-        text-shadow: 0 0 10px #00f2ff, 0 0 20px #00f2ff, 0 0 30px #00f2ff;
+        color: #ffffff;
         text-align: center;
-        letter-spacing: 15px;
-        text-transform: uppercase;
-        margin-top: -60px;
+        letter-spacing: 12px;
+        text-shadow: 0 0 15px rgba(0, 242, 255, 0.5);
+        margin-bottom: 0px;
     }
 
-    /* Subtítulo Táctico */
-    .tech-sub {
-        font-family: 'JetBrains Mono', monospace;
-        text-align: center;
-        color: #fff;
-        opacity: 0.8;
-        letter-spacing: 5px;
-        font-weight: 300;
-        margin-top: -10px;
+    /* Paneles Crystal (Casi invisibles) */
+    .st-emotion-cache-12w0qpk { 
+        background: rgba(255, 255, 255, 0.02) !important;
+        border: 1px solid rgba(255, 255, 255, 0.05) !important;
+        border-radius: 2px !important;
     }
 
-    /* Paneles de Vidrio Holográfico Flotante (Glassmorphism) */
-    .hologram-panel {
-        background: rgba(0, 242, 255, 0.01);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
-        border: 1px solid rgba(0, 242, 255, 0.1);
-        border-radius: 4px;
-        padding: 25px;
-        box-shadow: 0 8px 32px 0 rgba(0, 242, 255, 0.05);
-        transition: 0.5s all ease;
-        min-height: 280px;
-    }
-    .hologram-panel:hover {
-        border-color: rgba(0, 242, 255, 0.6);
-        background: rgba(0, 242, 255, 0.03);
-        transform: translateY(-8px) scale(1.01);
-        box-shadow: 0 0 50px rgba(0, 242, 255, 0.2);
-    }
-
-    /* Títulos de Módulo (Con brillo sutil) */
-    .module-title {
-        font-family: 'Syncopate', sans-serif;
-        color: #fff;
-        text-shadow: 0 0 5px #00f2ff;
-        font-size: 1.1rem;
-        letter-spacing: 2px;
-        margin-bottom: 15px;
-    }
-
-    /* Estado de Núcleos (Multi-color sutil) */
-    .core-status {
-        font-family: 'JetBrains Mono', monospace;
-        font-size: 0.8rem;
-        margin-top: 10px;
-    }
-
-    /* Botón Maestro Táctico (Interactivo) */
+    /* Botón ORO de 24k */
     div.stButton > button {
         background: transparent !important;
-        border: 1px solid #00f2ff !important;
-        color: #00f2ff !important;
+        border: 1px solid #d4af37 !important;
+        color: #d4af37 !important;
         font-family: 'Syncopate', sans-serif;
-        font-weight: bold;
-        height: 60px;
-        width: 100% !important;
-        text-transform: uppercase;
-        letter-spacing: 3px;
-        transition: 0.5s;
-        border-radius: 2px;
-        font-size: 0.9rem;
+        transition: 0.4s;
+        width: 100%;
+        height: 50px;
     }
     div.stButton > button:hover {
-        background: #00f2ff !important;
+        background: #d4af37 !important;
         color: #000 !important;
-        box-shadow: 0 0 60px #00f2ff;
-        transform: scale(1.02);
+        box-shadow: 0 0 30px #d4af37;
     }
 
-    /* Estilo de Inputs (Campos de texto transparentes) */
-    .stTextInput>div>div>input {
-        background-color: rgba(0, 0, 0, 0.6) !important;
-        color: #00f2ff !important;
-        border: 1px solid rgba(0, 242, 255, 0.2) !important;
-        border-radius: 2px;
-        text-align: center;
-        font-family: 'JetBrains Mono', monospace;
-    }
-
-    /* Gráficas con estilo Stark (Transparentes) */
-    .stVegaLiteChart {
-        background-color: transparent !important;
-        border: none !important;
-    }
+    /* Sliders de Trading */
+    .stSlider > div > div > div > div { background: #d4af37 !important; }
     </style>
 """, unsafe_allow_html=True)
 
-# --- CABECERA ---
-st.markdown("<h1>PROKONECTA</h1>", unsafe_allow_html=True)
-st.markdown("<p class='tech-sub'>GLOBAL OS | UNIFIED INTELLIGENCE</p>", unsafe_allow_html=True)
+st.markdown("<h1 class='stark-title'>PROKONECTA OS</h1>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; opacity:0.5; letter-spacing:3px;'>ADVANCED INFRASTRUCTURE v4.0</p>", unsafe_allow_html=True)
 
-# --- SISTEMA DE NAVEGACIÓN HOLOGRÁFICA ---
-st.write("---")
-tab_command, tab_trading, tab_creative = st.tabs(["🏛️ COMANDO OPERATIVO", "📈 TRADING ENGINE", "🚀 CREATIVOS"])
+# --- NAVEGACIÓN ---
+tabs = st.tabs(["⚡ COMANDO CEO", "💰 TRADING LAB", "📱 VIRAL ENGINE"])
 
-# 1. MÓDULO DE COMANDO OPERATIVO (CEO, COACH, GLOBAL MAPS)
-with tab_command:
-    col_c1, col_c2 = st.columns(2)
-    with col_c1:
-        st.markdown("""<div class="hologram-panel">
-            <h3 class="module-title">🏢 CEO GLOBAL COMMAND</h3>
-            <p style="color:#fff; opacity:0.7;">Sincronización de CRM, Inteligencia de Mercado Google Maps México, Logística Avanzada.</p>
-            <div class="core-status">● Potenciado por <span style="color:#ff9068">GPT-4</span> + <span style="color:#00ff88">Gemini 1.5</span></div>
-        </div>""", unsafe_allow_html=True)
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("INICIAR PROTOCOLO EMPRESARIAL"):
-            st.info("🛰️ Jarvis: 'Sincronizando satélites de datos comerciales...'")
-            
-    with col_c2:
-        st.markdown("""<div class="hologram-panel">
-            <h3 class="module-title">🧠 COACH CENTRAL OPERATIVO</h3>
-            <p style="color:#fff; opacity:0.7;">Análisis de riesgos, optimización de decisiones de alto impacto y soporte estratégico emocional.</p>
-            <div class="core-status">● <span style="color:#00f2ff">EMPATHY ENGINE ACTIVE</span></div>
-        </div>""", unsafe_allow_html=True)
-        st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("INICIAR CONSULTA ESTRATÉGICA"):
-            st.success("Jarvis: 'El motor analítico está listo, socio. ¿Cuál es el desafío de hoy?'")
+# --- TAB 1: RADAR DE NEGOCIOS ---
+with tabs[0]:
+    st.subheader("🛰️ Radar de Expansión México")
+    col1, col2 = st.columns([1, 2])
+    with col1:
+        zona = st.text_input("Ingresa zona de escaneo:", "Polanco, CDMX")
+        if st.button("DESPLEGAR RADAR"):
+            with st.spinner("Escaneando Google Maps..."):
+                time.sleep(2)
+                st.success(f"Radar activo en {zona}")
+    with col2:
+        # Simulación de datos reales para cerrar clientes
+        data = {
+            "Negocio": ["Restaurante El Lujo", "Hotel Boutique", "Gimnasio Alpha"],
+            "Puntuación IA": ["95%", "82%", "78%"],
+            "Estado": ["Sin IA", "Web Obsoleta", "Sin CRM"]
+        }
+        st.table(pd.DataFrame(data))
 
-# 2. MÓDULO TRADING LAB
-with tab_trading:
-    st.subheader("📊 Jarvis Trading Lab | Wall Street")
-    # Gráfica limpia con el color de Jarvis
-    tr_data = pd.DataFrame(np.random.randn(25, 1), columns=['Rendimiento'])
-    st.area_chart(tr_data, color="#00f2ff")
-    
-    col_t1, col_t2 = st.columns(2)
+# --- TAB 2: TRADING MANIPULABLE ---
+with tabs[1]:
+    st.subheader("📈 Trading Engine (Control de Capital)")
+    col_t1, col_t2 = st.columns([1, 3])
     with col_t1:
-        st.metric("CAPITAL SIMULADO", "$152,400 USD", "+$4,200")
+        # Aquí tú manipulas el balance a tu gusto
+        balance_manual = st.slider("Ajustar Balance ($ USD)", 1000, 500000, 150000)
+        equidad_manual = st.slider("Ajustar Equidad ($ USD)", 1000, 500000, 155000)
+        st.metric("BALANCE ACTUAL", f"${balance_manual:,}")
+        st.metric("EQUIDAD TOTAL", f"${equidad_manual:,}", f"{equidad_manual - balance_manual:,}")
     with col_t2:
-        if st.button("EJECUTAR ANÁLISIS AGRESIVO"):
-            st.warning("Jarvis: 'Escaneando flujos de capital en tiempo real...'")
+        # Gráfica reactiva al balance ajustado
+        chart_data = pd.DataFrame(
+            np.random.randn(20, 1).cumsum() + (balance_manual / 10000), 
+            columns=['Equity Path']
+        )
+        st.line_chart(chart_data, color="#d4af37")
 
-# 3. MÓDULO CREATIVO (TikTok)
-with tab_creative:
-    st.subheader("🤳 Viralidad Bajo Demanda")
-    creative_prompt = st.text_input("Ingresa tu visión creativa:", placeholder="Ej: 'Genera un guion viral para vender mi nuevo producto en CDMX'...")
-    if st.button("CREAR IMPACTO VIRAL"):
-        with st.status("Jarvis orquestando núcleos...", expanded=True):
-            st.write("1. **Claude** analizando psicología...")
-            time.sleep(1)
-            st.write("2. **Gemini** buscando tendencias en México...")
-            time.sleep(1)
-            st.success("Jarvis: 'Estrategia de impacto generada.'")
+# --- TAB 3: VIRAL TIKTOK ---
+with tabs[2]:
+    st.subheader("🚀 Viralizador Procore")
+    prompt_viral = st.text_area("¿Qué producto vamos a hacer viral hoy?", "Menús holográficos transparentes para restaurantes de lujo...")
+    if st.button("GENERAR ESTRATEGIA VIRAL"):
+        st.write("---")
+        st.markdown("### 📝 Guion Sugerido por Jarvis:")
+        st.write("1. **Hook**: '¿Sigues usando menús de papel en 2026? Mira esto...'")
+        st.write("2. **Cuerpo**: Mostrar la interfaz de ProKonecta en el acrílico transparente.")
+        st.write("3. **CTA**: 'Comenta IA para llevar tu restaurante al futuro.'")
 
-# --- FOOTER ---
-st.write("---")
-st.markdown("<p style='text-align: center; font-size: 10px; color: #333; letter-spacing: 2px;'>JARVIS NEURAL NETWORK OS v3.0 | PROKONECTA ©</p>", unsafe_allow_html=True)
+st.markdown("<p style='text-align:center; font-size:10px; opacity:0.3; margin-top:50px;'>MODO EJECUTIVO NIVEL 5 ACTIVO</p>", unsafe_allow_html=True)
